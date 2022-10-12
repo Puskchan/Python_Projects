@@ -30,10 +30,14 @@ while True:
     print(f'Connection from {address} has been established')
 
     """ There is a limit to what is sent over so I fixed it
-        by adding a header so that it tells me what is
+        by adding a header so that it tells me what
         the length of the message is before hand."""
 
     msg = "Welcome to the server"
+
+    """ This adds a buffer for the msg length before the actual msg
+        I have kept it to a 10 bits number as thats the biggest
+        msg I can afford to send."""
     msg = f"{len(msg):<{HEADERSIZE}}"+msg
 
     """Sending the data"""
