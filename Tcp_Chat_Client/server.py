@@ -2,7 +2,7 @@
 and recieve data that sits on an IP and a Port"""
 import socket
 import time
-
+import pickle
 
 HEADERSIZE = 10
 
@@ -33,18 +33,30 @@ while True:
         by adding a header so that it tells me what
         the length of the message is before hand."""
 
-    msg = "Welcome to the server"
+    """ Pickling is the process whereby a Python object hierarchy
+        is converted into a byte stream. It is the process of
+        serialization/flattening."""
+    d = {1:"aditya",2:"hi"}
+    msg = pickle.dumps(d)
+    # print(msg)
 
     """ This adds a buffer for the msg length before the actual msg
         I have kept it to a 10 bits number as thats the biggest
         msg I can afford to send."""
-    msg = f"{len(msg):<{HEADERSIZE}}"+msg
+    """ Only the header needs to be converted here as the msg is
+        already in bytes dur to Pickling."""
+    msg = bytes(f"{len(msg):<{HEADERSIZE}}", "utf-8") + msg
 
     """Sending the data"""
-    clientsocket.send(bytes(msg, "utf-8"))
+    clientsocket.send(msg)
 
-    while True:
-        time.sleep(3)
-        msg = f"The time is: {time.time()}"
-        msg = f"{len(msg):<{HEADERSIZE}}"+msg
-        clientsocket.send(bytes(msg, "utf-8"))
+
+
+    # """ This is just a test case to check if I can continously
+    #     send data to the client. It sends the current time
+    #     to the client every 3 seconds"""
+    # while True:
+    #     time.sleep(3)
+    #     msg = f"The time is: {time.time()}"
+    #     msg = f"{len(msg):<{HEADERSIZE}}"+msg
+    #     clientsocket.send(bytes(msg, "utf-8"))

@@ -1,6 +1,7 @@
 """Sockets are endpoints of a communication that send
 and recieve data that sits on an IP and a Port"""
 import socket
+import pickle
 
 HEADERSIZE = 10
 
@@ -15,7 +16,7 @@ s.connect((socket.gethostname(), 1234))
 
 while True:
     # As the data incoming is in buffers we need to make the full message
-    full_msg = ''
+    full_msg = b''
     new_msg = True
 
     while True:
@@ -33,15 +34,21 @@ while True:
             new_msg = False
 
         # Making the message
-        full_msg += msg.decode("utf-8")
+        full_msg += msg
         # we need to decode the message before making it
 
         # Check if the full message is recieved or not
         if len(full_msg)-HEADERSIZE == msglen:
             print("Full msg recieved")
+            # Remove the header and return the msg
             print(full_msg[HEADERSIZE:])
+
+            # Here we unpickle the message and printing it
+            d = pickle.loads(full_msg[HEADERSIZE:])
+            print(d)
+
             new_msg = True
-            full_msg = ''
+            full_msg = b''
 
     # Print the msg
     print(full_msg)
