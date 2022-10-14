@@ -2,7 +2,7 @@
 and recieve data that sits on an IP and a Port"""
 import socket
 import time
-import pickle
+import pickle # Using this so we could send python objects to the client
 
 HEADERSIZE = 10
 
